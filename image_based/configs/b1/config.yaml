@@ -1,0 +1,49 @@
+common:
+    model:
+        arch: efficientnet-b1
+        kwargs:
+            num_classes: 2
+            pretrain_path: ../pretrain/efficientnet-b1-f1951068.pth
+    optimizer:
+        type: SGD
+        kwargs:
+            lr: 0.01
+            momentum: 0.9
+            weight_decay: 0.0001
+            nesterov: True
+    augmentation:
+        imgnet_mean: True
+        input_size: 299
+        min_scale: 0.88
+
+    distributed_file: b1file
+    workers: 1
+    batch_size: 16
+
+    lr_scheduler:
+        type: STEP
+
+        lr_steps: [15000, 25000, 35000, 45000]
+        lr_mults: [0.5, 0.5, 0.5, 0.5]
+
+        base_lr: 0.01
+        warmup_steps: 1000
+        warmup_lr: 0.03
+        max_iter: 60002
+
+    label_smooth: 0
+    positive_weight: 0.1
+
+    save_path: experiments/b1_aug_rgb_299
+    val_freq: 2000
+    print_freq: 100
+
+    train_root: ../DFDC-Kaggle_Alignedface
+    train_source: "../DFDC-Kaggle_list/val_30-39_train_alignedface_png.txt"
+
+    val_root: [
+      "../DFDC-Kaggle_Alignedface"
+    ]
+    val_source: [
+      "../DFDC-Kaggle_list/val_30-39_val_alignedface_png.txt"
+    ]

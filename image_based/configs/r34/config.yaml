@@ -1,0 +1,51 @@
+common:
+    model:
+        arch: resnet34
+        kwargs:
+            num_classes: 2
+            pretrain_path: ../pretrain/resnet34-333f7ec4.pth
+            
+    optimizer:
+        type: SGD
+        kwargs:
+            lr: 0.001
+            momentum: 0.9
+            weight_decay: 0.0001
+            nesterov: True
+            
+    augmentation:
+        imgnet_mean: True
+        input_size: 224
+        min_scale: 0.875
+
+    distributed_file: r34file
+    workers: 1
+    batch_size: 32
+
+    lr_scheduler:
+        type: STEP
+
+        lr_steps: [10000, 15000, 20000, 25000]
+        lr_mults: [0.5, 0.5, 0.5, 0.5]
+
+        base_lr: 0.001
+        warmup_steps: 1000
+        warmup_lr: 0.02
+        max_iter: 30001
+        
+    label_smooth: 0
+    positive_weight: 0.1
+    
+    save_path: experiments/r34_aug_rgb_224
+    val_freq: 1000
+    print_freq: 100
+
+    train_root: ../DFDC-Kaggle_Alignedface
+    train_source: "../DFDC-Kaggle_list/val_30-39_train_alignedface_png.txt"
+
+    val_root: [
+      "../DFDC-Kaggle_Alignedface"
+    ]
+    val_source: [
+      "../DFDC-Kaggle_list/val_30-39_val_alignedface_png.txt"
+    ]

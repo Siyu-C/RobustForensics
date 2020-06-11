@@ -1,0 +1,64 @@
+common:
+    model:
+        arch: slowfast50
+        kwargs:
+            num_classes: 2
+            alpha: 4
+            beta: 0.125
+            tau: 16
+            zero_init_residual: False
+            
+    pretrain_path: ../pretrain/sf50_k400.pth
+            
+    optimizer:
+        type: SGD
+        kwargs:
+            lr: 0.002
+            momentum: 0.9
+            weight_decay: 0.0001
+            nesterov: True
+            
+    augmentation:
+        min_scale: 224
+        max_scale: 340
+        input_size: 224
+        
+        sample_duration: 128
+        sample_step: 4
+        temporal_crop: random
+        val_input_size: 256
+        
+    norm_value: 255
+    mean_dataset: kinetics
+
+    distributed_file: sf50_noaugfile
+    workers: 4
+    batch_size: 4
+
+    lr_scheduler:
+        type: STEP
+
+        lr_steps: [15000, 25000, 35000, 45000]
+        lr_mults: [0.5, 0.5, 0.5, 0.5]
+
+        base_lr: 0.002
+        warmup_steps: 1000
+        warmup_lr: 0.05
+        max_iter: 55001
+    
+    label_smooth: 0
+    positive_weight: 0.1
+    
+    save_path: experiments/sf50_224_32x4
+    val_freq: 1000
+    print_freq: 100
+
+    train_root: ../DFDC-Kaggle_Alignedface
+    train_source: "../DFDC-Kaggle_list/all_videos_train_alignedface_jpg.txt"
+    
+    val_root: [
+      "../DFDC-Kaggle_Alignedface"
+    ]
+    val_source: [
+      "../DFDC-Kaggle_list/all_videos_val_sf_alignedface_jpg.txt"
+    ]
